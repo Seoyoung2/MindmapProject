@@ -13,7 +13,9 @@ public class CenterPanel extends JPanel{
     	setBackground(new Color(255, 239, 213));
     }
     
-    // 각 노드의 위치 계산하여 화살표를 이어주는 함수 필요
+    // 각 노드의 위치 계산하기
+    
+    // 화살표 그리기
     
     // 노드 선택
     

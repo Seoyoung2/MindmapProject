@@ -21,7 +21,7 @@ public class Window extends JFrame{
 		JSplitPane subSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, TextEditorPane, MindMapPane);
 		JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, subSplitPane, AttributePane);
 		
-		subSplitPane.setDividerLocation(320);
+		subSplitPane.setDividerLocation(300);
 		mainSplitPane.setDividerLocation(960);
 			
 		setJMenuBar(new MenuBar()); // Frame에 메뉴바 추가
