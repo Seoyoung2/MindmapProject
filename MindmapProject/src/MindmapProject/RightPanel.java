@@ -7,6 +7,7 @@ import javax.swing.*;
 public class RightPanel extends JPanel{
 	JPanel rightPanel;
 	JTextField [] attriTField;
+	static Node node;
 	
 	public RightPanel(){
 		setLayout(new BorderLayout());
@@ -41,8 +42,10 @@ public class RightPanel extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			JButton b = (JButton)e.getSource();
 			if(b.getText().equals("변경")) {
-				// setLocation 등으로 설정 필요.
 				// 서로 선이 그려질 경우는 어떻게 해야하는가..ㅠ..
+				node.setLocation(Integer.parseInt(attriTField[1].getText()),Integer.parseInt(attriTField[2].getText()));
+				node.setSize(Integer.parseInt(attriTField[3].getText()), Integer.parseInt(attriTField[4].getText()));
+				node.setBackground(new Color(Integer.parseInt(attriTField[5].getText(),16)));
 			}
 		}
 	}
