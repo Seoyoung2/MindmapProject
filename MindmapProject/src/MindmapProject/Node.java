@@ -18,12 +18,11 @@ public class Node extends JLabel{
 	String str; // 내 이름
 	int level; // tab 개수
 	int x, y, width, height; // private는 이후에
-<<<<<<< HEAD
+
 	Point up, down, left, right, center;
-=======
+
 	Color color;
 	
->>>>>>> origin/master
 	public Node(String naming){
 		super(naming); // 패널에서 보일 노드의 제목
 		this.str = naming; // 노드 제목을 알 수 있게.
