@@ -22,14 +22,15 @@ public class Stack {
 	}
 	
 	void push(Node data, int tabcnt) {
-	//	System.out.println("push func");
+	//	System.out.println("push func");	
 		data.level = tabcnt;
 		
 		while(isEmpty() == false) {
 			if(top().level == data.level - 1) { // 부모노드이면
 				data.parentNode = top();
+				data.parentNode.childCnt++;
 				break;
-			}			
+			}
 			else
 				pop();			
 		}
