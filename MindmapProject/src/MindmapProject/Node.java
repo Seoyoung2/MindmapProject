@@ -18,7 +18,12 @@ public class Node extends JLabel{
 	String str; // 내 이름
 	int level; // tab 개수
 	int x, y, width, height; // private는 이후에
+<<<<<<< HEAD
 	Point up, down, left, right, center;
+=======
+	Color color;
+	
+>>>>>>> origin/master
 	public Node(String naming){
 		super(naming); // 패널에서 보일 노드의 제목
 		this.str = naming; // 노드 제목을 알 수 있게.
@@ -136,19 +141,6 @@ public class Node extends JLabel{
 
 		@Override
 		public void mouseClicked(MouseEvent e) { // 마우스 버튼이 클릭
-			setBorder(new BevelBorder(BevelBorder.LOWERED));
-            setBackground(Color.ORANGE);
-            
-			Window.getRightPanel().attriTField[0].setText(node.str);
-			Window.getRightPanel().attriTField[1].setText(String.valueOf(node.getX()));
-			Window.getRightPanel().attriTField[2].setText(String.valueOf(node.getY()));
-			Window.getRightPanel().attriTField[3].setText(String.valueOf(node.getWidth()));
-			Window.getRightPanel().attriTField[4].setText(String.valueOf(node.getHeight()));
-	//		Window.getRightPanel().attriTField[5].setText(String.valueOf(node.getColorModel()));
-			
-			setBorder(new BevelBorder(BevelBorder.LOWERED));
-            setBackground(Color.ORANGE);
-            System.out.println(parentNode.str);
 		}
 
 		@Override
@@ -164,7 +156,21 @@ public class Node extends JLabel{
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {} // 마우스 버튼이 눌러짐
+		public void mousePressed(MouseEvent e) { // 마우스 버튼이 눌러짐
+			Window.getRightPanel().node = node;		//클릭한 노드의 속성을 rightPanel에서 바꿀수 있게
+
+			setBorder(new BevelBorder(BevelBorder.LOWERED));
+            color = node.getBackground();
+            
+			Window.getRightPanel().attriTField[0].setText(node.str);
+			Window.getRightPanel().attriTField[1].setText(String.valueOf(node.getX()));
+			Window.getRightPanel().attriTField[2].setText(String.valueOf(node.getY()));
+			Window.getRightPanel().attriTField[3].setText(String.valueOf(node.getWidth()));
+			Window.getRightPanel().attriTField[4].setText(String.valueOf(node.getHeight()));
+			Window.getRightPanel().attriTField[5].setText(Integer.toHexString(color.getRGB()).substring(2));
+
+            //System.out.println(parentNode.str);		//트리추가 아직이어서 에러뜸
+		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {} // 눌러진 마우스 버튼이 떼짐
