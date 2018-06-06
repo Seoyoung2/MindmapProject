@@ -101,6 +101,7 @@ public class BarEvent {
 		    			saveFile += ".json";
 		    		}	
 		    	}
+		    	else { return; }
 	    	}
 	 
 	    	JSONObject jObject = new JSONObject();
