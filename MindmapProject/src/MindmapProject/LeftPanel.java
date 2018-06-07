@@ -37,6 +37,7 @@ public class LeftPanel extends JPanel{
     	int sublen;
     	int tabcnt;
     	@Override
+    	
     	public void actionPerformed(ActionEvent e) {
     		JButton b = (JButton)e.getSource();
     		
@@ -61,32 +62,18 @@ public class LeftPanel extends JPanel{
     						stk.push(datas[i], tabcnt); // 스택에 넣고
     						Window.getCenterPanel().add(datas[i]); // 가운데 패널에 노드 추가
     						
-    						if(datas[i].parentNode != null) {
-    						
-    							datas[i].x = datas[i].getLocation().x;
-    							datas[i].y = datas[i].getLocation().y;
-    							datas[i].width = 72;
-    							datas[i].height = 30;
-    						
-    							datas[i].up = new Point(datas[i].x + datas[i].width / 2, datas[i].y); // 선을 연결할 좌표
-    							datas[i].down = new Point(datas[i].up.x, datas[i].y + datas[i].height);
-    							datas[i].left = new Point(datas[i].x, datas[i].y + datas[i].height / 2);
-    							datas[i].right = new Point(datas[i].x + datas[i].width, datas[i].y + datas[i].height / 2);
-    							datas[i].center = new Point(datas[i].up.x, datas[i].right.y); 
-    						
-    						}
+    						if(datas[i].parentNode != null)
+    							initializeNode(datas[i]);
     						
     						else { // root면 센터에 배치.
     							datas[i].setBounds(Window.getCenterPanel().getWidth() / 2, Window.getCenterPanel().getHeight() / 2, 72, 30);
-    							datas[i].x = datas[i].getLocation().x;
-    							datas[i].y = datas[i].getLocation().y;
-    							datas[i].width = 72;
-    							datas[i].height = 30;
+    							initializeNode(datas[i]);
     						}
     						break;
     					}
     				}
-    			}    			
+    			}
+    			
     			for(int i = 0; i < datas.length; i++) {
     				if(datas[i].parentNode != null)
     					datas[i].setMyLocation();
@@ -94,7 +81,24 @@ public class LeftPanel extends JPanel{
 
     			Window.getCenterPanel().revalidate();
     			Window.getCenterPanel().repaint();
-    		} // 적용 버튼이면 끝
+    		} // 적용 버튼 끝
     	}
+    }
+    
+    void initializeNode(Node node) {
+    	node.x = node.getLocation().x;
+		node.y = node.getLocation().y;
+		
+		if(node.width == 0 || node.width == 72)
+			node.width = 72;
+		
+		if(node.height == 0 || node.height == 30)
+			node.height = 30;
+
+		node.up = new Point(node.x + node.width / 2, node.y); // 선을 연결할 좌표
+		node.down = new Point(node.up.x, node.y + node.height);
+		node.left = new Point(node.x, node.y + node.height / 2);
+		node.right = new Point(node.x + node.width, node.y + node.height / 2);
+		node.center = new Point(node.up.x, node.right.y); 
     }
 }

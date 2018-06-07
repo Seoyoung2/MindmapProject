@@ -52,34 +52,3 @@ class MenuBar extends JMenuBar {
 		}
     }
 }
-
-
-/*
-public class MenuBar extends JMenuBar{ 
-    public MenuBar(){
-    	
-    	JMenu [] menuBtn = {new JMenu("New"), new JMenu("Open"), new JMenu("Save"), new JMenu("Save as.."), new JMenu("Close")};  	
-    	setBackground(Color.LIGHT_GRAY);
-    	
-    	for(int i=0; i<5; i++) {
-    		add(menuBtn[i]);
-    		menuBtn[i].setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 13));
-        }
-    } 
-    
-    // 새로 만들기 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-    // 열기 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-    // 저장 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-    // 다른 이름으로 저장 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-    // 닫기 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-    // 적용 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-    // 변경 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
-    
-}
-*/
