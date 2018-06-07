@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+
 public class Node extends JLabel{
 	Node parentNode;
 	int childCnt; // 자식의 수
@@ -18,12 +19,11 @@ public class Node extends JLabel{
 	String str; // 내 이름
 	int level; // tab 개수
 	int x, y, width, height; // private는 이후에
-<<<<<<< HEAD
+
 	Point up, down, left, right, center;
-=======
+
 	Color color;
 	
->>>>>>> origin/master
 	public Node(String naming){
 		super(naming); // 패널에서 보일 노드의 제목
 		this.str = naming; // 노드 제목을 알 수 있게.
@@ -40,82 +40,109 @@ public class Node extends JLabel{
 		setOpaque(true);
 	}
 	
+	@Override
+	public void paintComponent(Graphics g) {
+		Graphics g1 = Window.getCenterPanel().getGraphics();
+		
+		if(this.parentNode != null) {
+		int select = selectLinkNode(this);
+		
+			if(select == 0)
+				g1.drawLine(this.up.x, this.up.y, this.parentNode.down.x, this.parentNode.down.y);
+			else if(select == 1)
+				g1.drawLine(this.up.x, this.up.y, this.parentNode.left.x, this.parentNode.left.y);
+			else if(select == 2)
+				g1.drawLine(this.up.x, this.up.y, this.parentNode.right.x, this.parentNode.right.y);
+			else if(select == 3)
+				g1.drawLine(this.down.x, this.down.y, this.parentNode.up.x, this.parentNode.up.y);
+			else if(select == 4)
+				g1.drawLine(this.down.x, this.down.y, this.parentNode.left.x, this.parentNode.left.y);
+			else if(select == 5)
+				g1.drawLine(this.down.x, this.down.y, this.parentNode.right.x, this.parentNode.left.y);
+			else if(select == 6)
+				g1.drawLine(this.left.x, this.left.y, this.parentNode.up.x, this.parentNode.up.y);
+			else if(select == 7)
+				g1.drawLine(this.left.x, this.left.y, this.parentNode.down.x, this.parentNode.down.y);
+			else if(select == 8)
+				g1.drawLine(this.left.x, this.left.y, this.parentNode.right.x, this.parentNode.right.y);
+			else if(select == 9)
+				g1.drawLine(this.right.x, this.right.y, this.parentNode.up.x, this.parentNode.up.y);
+			else if(select == 10)
+				g1.drawLine(this.right.x, this.right.y, this.parentNode.down.x, this.parentNode.down.y);
+			else if(select == 11)
+				g1.drawLine(this.right.x, this.right.y, this.parentNode.left.x, this.parentNode.left.y);
+		}
+		
+		super.paintComponent(g);
+		repaint();
+	}
+	
+	int selectLinkNode(Node node) {
+		double [] dis = new double[12];
+			
+		dis[0] = getDistance(node.up, node.parentNode.down);
+		dis[1] = getDistance(node.up, node.parentNode.left);
+		dis[2] = getDistance(node.up, node.parentNode.right);
+		dis[3] = getDistance(node.down, node.parentNode.up);
+		dis[4] = getDistance(node.down, node.parentNode.left);
+		dis[5] = getDistance(node.down, node.parentNode.right);
+		dis[6] = getDistance(node.left, node.parentNode.up);
+		dis[7] = getDistance(node.left, node.parentNode.down);
+		dis[8] = getDistance(node.left, node.parentNode.right);
+		dis[9] = getDistance(node.right, node.parentNode.up);
+		dis[10] = getDistance(node.right, node.parentNode.down);
+		dis[11] = getDistance(node.right, node.parentNode.left);
+		
+		int ret = 0;
+		double minimum = dis[0];
+		
+		for(int i = 0; i < dis.length; i++)
+			if(minimum > dis[i]) {
+				minimum = dis[i];
+				ret = i;
+			}
+		
+		return ret;
+	}
+	
+	double getDistance(Point p1, Point p2) {
+		return Math.sqrt(Math.pow(Math.abs(p2.x - p1.x), 2) + Math.pow(Math.abs(p2.y - p1.y), 2)); 
+	}
+	
 	void setMyLocation() {
 		int distance = 200 / this.level;
 		double radius;
-	//	Graphics g = Window.getCenterPanel().getGraphics();
-		radius = 360 / (parentNode.childCnt) * parentNode.childLocation;
 		
+		if(this.level == 1)
+			radius = 360 / parentNode.childCnt * (parentNode.childLocation + 1);
+		else
+			radius = 360 / (parentNode.childCnt + 1) * (parentNode.childLocation + 1);
+
 		this.x = parentNode.x + (int)(distance * Math.cos(Math.toRadians(radius)));
 		this.y = parentNode.y + (int)(distance * Math.sin(Math.toRadians(radius)));
 		
 		setBounds(this.x, this.y, this.width, this.height);
+		this.initializeNode(this);
 		parentNode.childLocation++;
-	//	paintComponent(Window.getCenterPanel().getGraphics());
 	}
-/*	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(Color.RED);
+	
+    void initializeNode(Node node) {
+    	node.x = node.getLocation().x;
+		node.y = node.getLocation().y;
 		
-		int val = getMinimumDistance();
-			
-		if(val == 0)
-			g.drawLine(this.up.x, this.up.y, parentNode.down.x, parentNode.down.y);
-		else if(val == 1)
-			g.drawLine(this.up.x, this.up.y, parentNode.left.x, parentNode.left.y);
-		else if(val == 2)
-			g.drawLine(this.up.x, this.up.y, parentNode.right.x, parentNode.right.y);
-		else if(val == 3)
-			g.drawLine(this.down.x, this.down.y, parentNode.up.x, parentNode.up.y);
-		else if(val == 4)
-			g.drawLine(this.down.x, this.down.y, parentNode.left.x, parentNode.left.y);
-		else if(val == 5)
-			g.drawLine(this.down.x, this.down.y, parentNode.right.x, parentNode.right.y);
-		else if(val == 6)
-			g.drawLine(this.left.x, this.left.y, parentNode.up.x, parentNode.up.y);
-		else if(val == 7)
-			g.drawLine(this.left.x, this.left.y, parentNode.down.x, parentNode.down.y);
-		else if(val == 8)
-			g.drawLine(this.left.x, this.left.y, parentNode.right.x, parentNode.right.y);
-		else if(val == 9)
-			g.drawLine(this.right.x, this.right.y, parentNode.up.x, parentNode.up.y);
-		else if(val == 10)
-			g.drawLine(this.right.x, this.right.y, parentNode.down.x, parentNode.down.y);
-		else if(val == 11)
-			g.drawLine(this.right.x, this.right.y, parentNode.left.x, parentNode.left.y);
-			
-	}
+		if(node.width == 0 || node.width == 72)
+			node.width = 72;
+		
+		if(node.height == 0 || node.height == 30)
+			node.height = 30;
 
-	int getMinimumDistance() {
-		double [] ret = new double[12];
-		double minimum;
-		int returnValue = 0;
-		
-		ret[0] = this.up.distance(parentNode.down);
-		ret[1] = this.up.distance(parentNode.left);
-		ret[2] = this.up.distance(parentNode.right);
-		ret[3] = this.down.distance(parentNode.up);
-		ret[4] = this.down.distance(parentNode.left);
-		ret[5] = this.down.distance(parentNode.right);
-		ret[6] = this.left.distance(parentNode.up);
-		ret[7] = this.left.distance(parentNode.down);
-		ret[8] = this.left.distance(parentNode.right);
-		ret[9] = this.right.distance(parentNode.up);
-		ret[10] = this.right.distance(parentNode.down);
-		ret[11] = this.right.distance(parentNode.left);
-		
-		minimum = ret[0];
-		
-		for(int i=0; i<12; i++)
-			if(minimum > ret[i]) {
-				minimum = ret[i];
-				returnValue = i;
-			}
-		
-		return returnValue;
-	}
-*/	
+		node.up = new Point(node.x + node.width / 2, node.y); // 선을 연결할 좌표
+		node.down = new Point(node.up.x, node.y + node.height);
+		node.left = new Point(node.x, node.y + node.height / 2);
+		node.right = new Point(node.x + node.width, node.y + node.height / 2);
+		node.center = new Point(node.up.x, node.right.y); 
+    }
+
 	class NodeListener implements MouseListener, MouseMotionListener{
 		Node node;
 		NodeListener(Node me){
@@ -137,6 +164,7 @@ public class Node extends JLabel{
 			
 			la.setLocation(p.x+endP.x - (int)la.getWidth()/2, p.y+ endP.y - (int)la.getHeight()/2);
 			la.getParent().repaint();
+			initializeNode(node);
 		}
 
 		@Override
