@@ -63,11 +63,11 @@ public class LeftPanel extends JPanel{
     						Window.getCenterPanel().add(datas[i]); // 가운데 패널에 노드 추가
     						
     						if(datas[i].parentNode != null)
-    							initializeNode(datas[i]);
+    							datas[i].initializeNode(datas[i]);
     						
     						else { // root면 센터에 배치.
     							datas[i].setBounds(Window.getCenterPanel().getWidth() / 2, Window.getCenterPanel().getHeight() / 2, 72, 30);
-    							initializeNode(datas[i]);
+    							datas[i].initializeNode(datas[i]);
     						}
     						break;
     					}
@@ -85,20 +85,4 @@ public class LeftPanel extends JPanel{
     	}
     }
     
-    void initializeNode(Node node) {
-    	node.x = node.getLocation().x;
-		node.y = node.getLocation().y;
-		
-		if(node.width == 0 || node.width == 72)
-			node.width = 72;
-		
-		if(node.height == 0 || node.height == 30)
-			node.height = 30;
-
-		node.up = new Point(node.x + node.width / 2, node.y); // 선을 연결할 좌표
-		node.down = new Point(node.up.x, node.y + node.height);
-		node.left = new Point(node.x, node.y + node.height / 2);
-		node.right = new Point(node.x + node.width, node.y + node.height / 2);
-		node.center = new Point(node.up.x, node.right.y); 
-    }
 }
