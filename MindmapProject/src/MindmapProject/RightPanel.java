@@ -48,6 +48,12 @@ public class RightPanel extends JPanel{
 				node.setLocation(Integer.parseInt(attriTField[1].getText()),Integer.parseInt(attriTField[2].getText()));
 				node.setSize(Integer.parseInt(attriTField[3].getText()), Integer.parseInt(attriTField[4].getText()));
 				node.setBackground(new Color(Integer.parseInt(attriTField[5].getText(),16)));
+				node.x = Integer.parseInt(attriTField[1].getText());
+				node.y = Integer.parseInt(attriTField[2].getText());
+				node.width = Integer.parseInt(attriTField[3].getText());
+				node.height = Integer.parseInt(attriTField[4].getText());
+				node.initializeNode(node);
+				
 			}catch(NumberFormatException e1) {
 				JOptionPane.showMessageDialog(null, "잘못된 입력형식입니다!");		// 숫자칸에 문자입력하거나 16진수 색상형식이 잘못됬을때
 				return;
