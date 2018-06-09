@@ -50,7 +50,6 @@ public class Node extends JLabel{
 		
 		if(this.parentNode != null) {
 		int select = selectLinkNode(this);
-		
 			if(select == 0)
 				g1.drawLine(this.up.x, this.up.y, this.parentNode.down.x, this.parentNode.down.y);
 			else if(select == 1)
@@ -120,7 +119,7 @@ public class Node extends JLabel{
 			radius = 360 / parentNode.childCnt * (parentNode.childLocation + 1);
 		else
 			radius = 360 / (parentNode.childCnt + 1) * (parentNode.childLocation + 1);
-
+		
 		this.x = parentNode.x + (int)(distance * Math.cos(Math.toRadians(radius)));
 		this.y = parentNode.y + (int)(distance * Math.sin(Math.toRadians(radius)));
 		
@@ -135,10 +134,15 @@ public class Node extends JLabel{
 		
 		if(node.width == 0 || node.width == 72)
 			node.width = 72;
+		else
+			node.width = node.getWidth();
 		
 		if(node.height == 0 || node.height == 30)
 			node.height = 30;
-
+		else
+			node.height = node.getHeight();
+		
+		setBounds(this.x, this.y, this.width, this.height);
 		node.up = new Point(node.x + node.width / 2, node.y); // 선을 연결할 좌표
 		node.down = new Point(node.up.x, node.y + node.height);
 		node.left = new Point(node.x, node.y + node.height / 2);
@@ -170,7 +174,9 @@ public class Node extends JLabel{
                 switch (cursor) {
 	                    case Cursor.N_RESIZE_CURSOR:
 	                        if (!(height - dy < 30)) {
-	                            setBounds(x, y + dy, width, height - dy);
+	                        	setBounds(x, y + dy, width, height - dy);
+	                        	node.y += dy;
+	                        	node.height -= dy;
 	                            getParent().revalidate();
 	                        }
 	                        break;
@@ -178,6 +184,7 @@ public class Node extends JLabel{
 	                    case Cursor.S_RESIZE_CURSOR:
 	                        if (!(height + dy < 30)) {
 	                            setBounds(x, y, width, height + dy);
+	                            node.height += dy;
 	                            start = e.getPoint();
 	                            getParent().revalidate();
 	                        }
@@ -186,6 +193,8 @@ public class Node extends JLabel{
 	                    case Cursor.W_RESIZE_CURSOR:
 	                        if (!(node.width - dx < 50)) {
 	                            setBounds(x + dx, y, width - dx, height);
+	                            node.x += dx;
+	                            node.width -= dx;
 	                            getParent().revalidate();
 	                        }
 	                        break;
@@ -193,6 +202,7 @@ public class Node extends JLabel{
 	                    case Cursor.E_RESIZE_CURSOR:
 	                        if (!(width + dx < 50)) {
 	                            setBounds(x, y, width + dx, height);
+	                            node.width += dx;
 	                            start = e.getPoint();
 	                            getParent().revalidate();
 	                        }
@@ -201,6 +211,10 @@ public class Node extends JLabel{
 	                    case Cursor.NW_RESIZE_CURSOR:
 	                        if (!(width - dx < 50) && !(height - dy < 30)) {
 	                            setBounds(x + dx, y + dy, width - dx, height - dy);
+	                            node.x += dx;
+	                            node.y += dy;
+	                            node.width -= dx;
+	                            node.height -= dy;
 	                            getParent().revalidate();
 	                        }
 	                        break;
@@ -208,6 +222,9 @@ public class Node extends JLabel{
 	                    case Cursor.NE_RESIZE_CURSOR:
 	                        if (!(width + dx < 50) && !(height - dy < 30)) {
 	                            setBounds(x, y + dy, width + dx, height - dy);
+	                            node.y += dy;
+	                            node.width += dx;
+	                            node.height -= dy;
 	                            start = new Point(e.getX(), start.y);
 	                            getParent().revalidate();
 	                        }
@@ -216,6 +233,9 @@ public class Node extends JLabel{
 	                    case Cursor.SW_RESIZE_CURSOR:
 	                        if (!(width - dx < 50) && !(height + dy < 30)) {
 	                            setBounds(x + dx, y, width - dx, height + dy);
+	                            node.x += dx;
+	                            node.width -= dx;
+	                            node.height += dy;
 	                            start = new Point(start.x, e.getY());
 	                            getParent().revalidate();
 	                        }
@@ -224,6 +244,8 @@ public class Node extends JLabel{
 	                    case Cursor.SE_RESIZE_CURSOR:
 	                        if (!(width + dx < 50) && !(height + dy < 30)) {
 	                            setBounds(x, y, width + dx, height + dy);
+	                            node.width += dx;
+	                            node.height += dy;
 	                            start = e.getPoint();
 	                            getParent().revalidate();
 	                        }
@@ -232,12 +254,16 @@ public class Node extends JLabel{
 	                    case Cursor.MOVE_CURSOR:
 		                        Rectangle bounds = getBounds();
 		                        bounds.translate(dx, dy);
+		                        node.x = dx;
+		                        node.y = dy;
 		                        setBounds(bounds);
 		                        getParent().revalidate();
                 	}
+                
                 setCursor(Cursor.getPredefinedCursor(cursor));
                 initializeNode(node);
 	            }
+			
 			Window.getRightPanel().attriTField[0].setText(node.str);
 			Window.getRightPanel().attriTField[1].setText(String.valueOf(node.getX()));
 			Window.getRightPanel().attriTField[2].setText(String.valueOf(node.getY()));

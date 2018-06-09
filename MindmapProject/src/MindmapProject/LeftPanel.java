@@ -56,6 +56,7 @@ public class LeftPanel extends JPanel{
     			for(int i = 0; i < values.length; i++) { // 스택을 이용한 트리 구조 형성
 					tabcnt = 0; // \t 개수, 레벨을 판정함
 					sublen = values[i].length(); // 문자열 길이
+					
 					for(int j = 0; j < sublen; j++) {
 						if(values[i].charAt(0)=='\t') { // 탭이면
 							++tabcnt; // 탭개수 올리고
