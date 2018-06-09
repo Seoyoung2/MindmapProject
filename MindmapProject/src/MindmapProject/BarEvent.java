@@ -18,7 +18,7 @@ import org.json.simple.parser.JSONParser;
 
 public class BarEvent {
 	
-	static boolean saveCnt = true;	//Ã³À½ ÀúÀåÇÏ´Â ÆÄÀÏµéÀº ´ÙÀÌ¾ó·Î±× ¶ß°Ô   (true¸é ¶ß°í false¸é ¾È¶ä)
+	static boolean saveCnt = true;	//ì²˜ìŒ ì €ì¥í•˜ëŠ” íŒŒì¼ë“¤ì€ ë‹¤ì´ì–¼ë¡œê·¸ ëœ¨ê²Œ   (trueë©´ ëœ¨ê³  falseë©´ ì•ˆëœ¸)
 	static String saveFile = null;
 	
 	 static void selectNew() {
@@ -34,19 +34,20 @@ public class BarEvent {
 	
 	 static void selectOpen() {
 			JFileChooser chooser = new JFileChooser();
-	    	FileNameExtensionFilter filter = new FileNameExtensionFilter("jsonÆÄÀÏ", "json");
+	    	FileNameExtensionFilter filter = new FileNameExtensionFilter("jsoníŒŒì¼", "json");
 	    	chooser.setCurrentDirectory(new File("C:\\Users\\CEO\\Desktop\\MindmapProject\\src"));
+		 		//íŒŒì¼ê²½ë¡œ ë°”ê¿”ì„œ ì‹¤í–‰í•´ì•¼ë­ã…‡ã…‡ã…‡ã…‡
 	    	chooser.setFileFilter(filter);
 	    	int ret = chooser.showOpenDialog(Window.getCenterPanel());
 	    	
 	    	if(ret == JFileChooser.APPROVE_OPTION) {
 	    		saveFile = chooser.getSelectedFile().toString();
-	    		//ÆÄÀÏ È®ÀåÀÚ(.json)À» ÀÔ·ÂÇÏÁö ¾Ê¾ÒÀ» °æ¿ì È®ÀåÀÚ Ãß°¡
+	    		//íŒŒì¼ í™•ì¥ì(.json)ì„ ì…ë ¥í•˜ì§€ ì•Šì•˜ì„ ê²½ìš° í™•ì¥ì ì¶”ê°€
 	    		if(!saveFile.endsWith(".json")) {
 	    			saveFile += ".json";
 	    		}	
 	        	
-	        	//´ÙÀÌ¾ó·Î±×¿¡¼­ ¿­±â¹öÆ° ´­·¶À»¶§ jsonÆÄÀÏ ÆÄ½Ì
+	        	//ë‹¤ì´ì–¼ë¡œê·¸ì—ì„œ ì—´ê¸°ë²„íŠ¼ ëˆŒë €ì„ë•Œ jsoníŒŒì¼ íŒŒì‹±
 	    		Window.getCenterPanel().removeAll();
 	        	JSONParser parser = new JSONParser();
 	        	try {
@@ -86,17 +87,17 @@ public class BarEvent {
 	 
 	    static void selectSave() {
 	    	
-	    	if(saveCnt == true) {	//Ã³À½ÀúÀåÇÏ´Â °Å¶ó¸é ¹«Á¶°Ç ´ÙÀÌ¾ó·Î±× »ı¼º
+	    	if(saveCnt == true) {	//ì²˜ìŒì €ì¥í•˜ëŠ” ê±°ë¼ë©´ ë¬´ì¡°ê±´ ë‹¤ì´ì–¼ë¡œê·¸ ìƒì„±
 		      	JFileChooser chooser = new JFileChooser();
-		    	FileNameExtensionFilter filter = new FileNameExtensionFilter("jsonÆÄÀÏ", "json");
-		    	chooser.setCurrentDirectory(new File("C:\\Users\\CEO\\Desktop\\MindmapProject\\src"));
+		    	FileNameExtensionFilter filter = new FileNameExtensionFilter("jsoníŒŒì¼", "json");
+		    	chooser.setCurrentDirectory(new File("C:\\Users\\CEO\\Desktop\\MindmapProject\\src"));	//ë‹¤ì´ì–¼ë¡œê·¸ ë””í´íŠ¸ê²½ë¡œ
 		    	chooser.setFileFilter(filter);
 		    	int ret = chooser.showSaveDialog(Window.getCenterPanel());
 		    	
 		    	if(ret == JFileChooser.APPROVE_OPTION) {
 		    		
 		    		saveFile = chooser.getSelectedFile().toString();
-		    		//ÆÄÀÏ È®ÀåÀÚ(.json)À» ÀÔ·ÂÇÏÁö ¾Ê¾ÒÀ» °æ¿ì È®ÀåÀÚ Ãß°¡
+		    		//íŒŒì¼ í™•ì¥ì(.json)ì„ ì…ë ¥í•˜ì§€ ì•Šì•˜ì„ ê²½ìš° í™•ì¥ì ì¶”ê°€
 		    		if(!saveFile.endsWith(".json")) {
 		    			saveFile += ".json";
 		    		}	
@@ -120,23 +121,23 @@ public class BarEvent {
 		    	jArray.add(jNodeInfo);
 		    }
 	    	jObject.put("node", jArray);
-	    	jObject.put("textarea", Window.getLeftPanel().getTextArea().getText());	//textArea³»¿ë ¹®ÀÚ¿­·Î ´Ù ÀúÀå
+	    	jObject.put("textarea", Window.getLeftPanel().getTextArea().getText());	//textAreaë‚´ìš© ë¬¸ìì—´ë¡œ ë‹¤ ì €ì¥
 	    	
 	 	   try {
 	 		   saveCnt = false;
 	 		   FileWriter file = new FileWriter(saveFile);
 	 		   file.write(jObject.toJSONString());
-	 		   System.out.println(jObject.toJSONString()); 				// ¾î¶»°Ô ÀúÀåµÇ³ª Å×½ºÆ®¿ë
+	 		   System.out.println(jObject.toJSONString()); 				// ì–´ë–»ê²Œ ì €ì¥ë˜ë‚˜ í…ŒìŠ¤íŠ¸ìš©
 	 		   file.flush();
 	 		   file.close();
-	 		   JOptionPane.showMessageDialog(Window.getCenterPanel(), "ÀúÀåµÇ¾ú½À´Ï´Ù^0^");
+	 		   JOptionPane.showMessageDialog(Window.getCenterPanel(), "ì €ì¥ë˜ì—ˆìŠµë‹ˆë‹¤^0^");
 	 		   
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	    }
 	    
-	    static void selectClose() {	//±×³É Á¾·áÇÔ
+	    static void selectClose() {	//ê·¸ëƒ¥ ì¢…ë£Œí•¨
 	    	System.exit(0);
 	    }
 }
