@@ -1,15 +1,20 @@
 package MindmapProject;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 
 public class Node extends JLabel{
@@ -33,10 +38,9 @@ public class Node extends JLabel{
 		NodeListener listener = new NodeListener(this);
 		addMouseMotionListener(listener);
 		addMouseListener(listener);
+		setBorder(new NodeDot());	//크기조절하는 점출력하는 보더클래스
 		
 		setHorizontalAlignment(SwingConstants.CENTER);
-		setBorder(new BevelBorder(BevelBorder.RAISED));
-		setBackground(Color.RED);
 		setOpaque(true);
 	}
 	
@@ -72,7 +76,6 @@ public class Node extends JLabel{
 			else if(select == 11)
 				g1.drawLine(this.right.x, this.right.y, this.parentNode.left.x, this.parentNode.left.y);
 		}
-		
 		super.paintComponent(g);
 		repaint();
 	}
@@ -145,26 +148,102 @@ public class Node extends JLabel{
 
 	class NodeListener implements MouseListener, MouseMotionListener{
 		Node node;
+		private int cursor;
+        private Point start = null;
+        
 		NodeListener(Node me){
 			this.node = me;
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) { // 마우스를 컴포넌트 위에서 드래그
-			Point endP = e.getPoint();
-			JLabel la = (JLabel)e.getSource();
-			Point p = la.getLocation();
-			
+					
+			if (start != null) {
+				int x = getX();
+				int y = getY();
+				int width = getWidth();
+				int height = getHeight();
+				
+                int dx = e.getX() - start.x;
+                int dy = e.getY() - start.y;
+
+                switch (cursor) {
+	                    case Cursor.N_RESIZE_CURSOR:
+	                        if (!(height - dy < 30)) {
+	                            setBounds(x, y + dy, width, height - dy);
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.S_RESIZE_CURSOR:
+	                        if (!(height + dy < 30)) {
+	                            setBounds(x, y, width, height + dy);
+	                            start = e.getPoint();
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.W_RESIZE_CURSOR:
+	                        if (!(node.width - dx < 50)) {
+	                            setBounds(x + dx, y, width - dx, height);
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.E_RESIZE_CURSOR:
+	                        if (!(width + dx < 50)) {
+	                            setBounds(x, y, width + dx, height);
+	                            start = e.getPoint();
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.NW_RESIZE_CURSOR:
+	                        if (!(width - dx < 50) && !(height - dy < 30)) {
+	                            setBounds(x + dx, y + dy, width - dx, height - dy);
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.NE_RESIZE_CURSOR:
+	                        if (!(width + dx < 50) && !(height - dy < 30)) {
+	                            setBounds(x, y + dy, width + dx, height - dy);
+	                            start = new Point(e.getX(), start.y);
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.SW_RESIZE_CURSOR:
+	                        if (!(width - dx < 50) && !(height + dy < 30)) {
+	                            setBounds(x + dx, y, width - dx, height + dy);
+	                            start = new Point(start.x, e.getY());
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.SE_RESIZE_CURSOR:
+	                        if (!(width + dx < 50) && !(height + dy < 30)) {
+	                            setBounds(x, y, width + dx, height + dy);
+	                            start = e.getPoint();
+	                            getParent().revalidate();
+	                        }
+	                        break;
+	
+	                    case Cursor.MOVE_CURSOR:
+		                        Rectangle bounds = getBounds();
+		                        bounds.translate(dx, dy);
+		                        setBounds(bounds);
+		                        getParent().revalidate();
+                	}
+                setCursor(Cursor.getPredefinedCursor(cursor));
+                initializeNode(node);
+	            }
 			Window.getRightPanel().attriTField[0].setText(node.str);
 			Window.getRightPanel().attriTField[1].setText(String.valueOf(node.getX()));
 			Window.getRightPanel().attriTField[2].setText(String.valueOf(node.getY()));
 			Window.getRightPanel().attriTField[3].setText(String.valueOf(node.getWidth()));
 			Window.getRightPanel().attriTField[4].setText(String.valueOf(node.getHeight()));
-			//Color
-			
-			la.setLocation(p.x+endP.x - (int)la.getWidth()/2, p.y+ endP.y - (int)la.getHeight()/2);
-			la.getParent().repaint();
-			initializeNode(node);
+			//Color 변경안되니까 나타날 필요없음
 		}
 
 		@Override
@@ -173,21 +252,16 @@ public class Node extends JLabel{
 
 		@Override
 		public void mouseEntered(MouseEvent e) { // 마우스가 컴포넌트 위에 올라옴
-			setBorder(new BevelBorder(BevelBorder.LOWERED));
-            setBackground(Color.WHITE);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) { // 마우스가 컴포넌트 밖으로 나감
-			setBorder(new BevelBorder(BevelBorder.RAISED));
-            setBackground(Color.PINK);
+			setCursor(Cursor.getDefaultCursor());
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) { // 마우스 버튼이 눌러짐
 			Window.getRightPanel().node = node;		//클릭한 노드의 속성을 rightPanel에서 바꿀수 있게
-
-			setBorder(new BevelBorder(BevelBorder.LOWERED));
             color = node.getBackground();
             
 			Window.getRightPanel().attriTField[0].setText(node.str);
@@ -197,13 +271,98 @@ public class Node extends JLabel{
 			Window.getRightPanel().attriTField[4].setText(String.valueOf(node.getHeight()));
 			Window.getRightPanel().attriTField[5].setText(Integer.toHexString(color.getRGB()).substring(2));
 
-            //System.out.println(parentNode.str);		//트리추가 아직이어서 에러뜸
+			NodeDot dot = (NodeDot)getBorder();
+            cursor = dot.getCursor(e);
+            start = e.getPoint();
+            requestFocus();
+            repaint();
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {} // 눌러진 마우스 버튼이 떼짐
+		public void mouseReleased(MouseEvent e) {
+			start = null;
+		} // 눌러진 마우스 버튼이 떼짐
 		
 		@Override
-		public void mouseMoved(MouseEvent e) {} // 마우스가 컴포넌트 위에서 움직임
+		public void mouseMoved(MouseEvent e) { // 마우스가 컴포넌트 위에서 움직임
+			if (hasFocus()) {					// 커서모양 바꾸기
+				NodeDot dot = (NodeDot)getBorder();
+				setCursor(Cursor.getPredefinedCursor(dot.getCursor(e)));
+	        }
+		} 
+	}
+	
+	class NodeDot implements Border{
+		/*		0		1		2
+		 * 		3				4
+		 * 		5		6		7	*/
+		int locations[] = {
+		        SwingConstants.NORTH_WEST, SwingConstants.NORTH, SwingConstants.NORTH_EAST,
+		        SwingConstants.WEST, SwingConstants.EAST,
+		        SwingConstants.SOUTH_WEST, SwingConstants.SOUTH, SwingConstants.SOUTH_EAST
+		    };
+		int cursors[] = {
+		        Cursor.NW_RESIZE_CURSOR, Cursor.N_RESIZE_CURSOR, Cursor.NE_RESIZE_CURSOR,
+		        Cursor.W_RESIZE_CURSOR, Cursor.E_RESIZE_CURSOR, 
+		        Cursor.SW_RESIZE_CURSOR, Cursor.S_RESIZE_CURSOR, Cursor.SE_RESIZE_CURSOR
+		    };
+		
+		@Override
+		public Insets getBorderInsets(Component c) {	//Border클래스 메소드들 오버라이딩
+			return new Insets(8,8,8,8);
+		}
+
+		@Override
+		public boolean isBorderOpaque() {
+			return false;
+		}
+
+		@Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        if (c.hasFocus()) {
+	            for (int i = 0; i < 8; i++) {	// 노드의 8개 점 출력
+	                Rectangle rect = getRectangle(x, y, width, height, locations[i]);
+	                g.setColor(Color.WHITE);
+	                g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
+	                g.setColor(Color.BLACK);
+	                g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
+	            }
+	        }
+		}
+		 private Rectangle getRectangle(int x, int y, int w, int h, int location) {	//점8개 각각의 위치지정
+		        switch (location) {
+		            case SwingConstants.NORTH:
+		                return new Rectangle(x + w / 2 - 4, y, 8, 8);
+		            case SwingConstants.SOUTH:
+		                return new Rectangle(x + w / 2 - 4, y + h - 8, 8, 8);
+		            case SwingConstants.WEST:
+		                return new Rectangle(x, y + h / 2 - 4, 8, 8);
+		            case SwingConstants.EAST:
+		                return new Rectangle(x + w - 8, y + h / 2 - 4, 8, 8);
+		            case SwingConstants.NORTH_WEST:
+		                return new Rectangle(x, y, 8, 8);
+		            case SwingConstants.NORTH_EAST:
+		                return new Rectangle(x + w - 8, y, 8, 8);
+		            case SwingConstants.SOUTH_WEST:
+		                return new Rectangle(x, y + h - 8, 8, 8);
+		            case SwingConstants.SOUTH_EAST:
+		                return new Rectangle(x + w - 8, y + h - 8, 8, 8);
+		        }
+		        return null;
+		    }
+
+		    public int getCursor(MouseEvent e) {
+		        Component c = e.getComponent();
+		        int w = c.getWidth();
+		        int h = c.getHeight();
+
+		        for (int i = 0; i < 8; i++) {	//점 위치에 맞는 커서모양
+		            Rectangle rect = getRectangle(0, 0, w, h, locations[i]);
+		            if (rect.contains(e.getPoint())) {
+		                return cursors[i];
+		            }
+		        }
+		        return Cursor.MOVE_CURSOR;
+		    }
 	}
 }

@@ -18,17 +18,23 @@ public class Window extends JFrame{
 		MindMapPane = new CenterPanel();
 		AttributePane = new RightPanel();
 		
-		JSplitPane subSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, TextEditorPane, MindMapPane);
-		JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, subSplitPane, AttributePane);
+		JScrollPane centerScrollPane = new JScrollPane();
+		centerScrollPane.setViewportView(MindMapPane);
+        JScrollPane rightScrollPane = new JScrollPane();
+        rightScrollPane.setViewportView(AttributePane);
+        
+		JSplitPane subSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, TextEditorPane, centerScrollPane);
+		JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, subSplitPane, rightScrollPane);
 		
-		subSplitPane.setDividerLocation(300);
-		mainSplitPane.setDividerLocation(960);
+		subSplitPane.setDividerLocation(360);
+		mainSplitPane.setDividerLocation(1240);
 			
 		setJMenuBar(new MenuBar()); // Frame에 메뉴바 추가
 		add(new ToolBar(), BorderLayout.NORTH); // Frame에 툴바 추가
 		add(mainSplitPane, BorderLayout.CENTER); // Frame에 패널 추가
 
-		setSize(1280, 720);	// Frame 사이즈 조정
+		setResizable(false);	// Frame 사이즈 조절못하게..
+		setSize(1600, 1000);	// Frame 사이즈 조정
 		setVisible(true);
 	}
 	

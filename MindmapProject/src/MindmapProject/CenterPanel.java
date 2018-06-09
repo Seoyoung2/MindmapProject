@@ -10,7 +10,8 @@ public class CenterPanel extends JPanel{
     public CenterPanel() {
     	setLayout(null);
     	centerPanel = new JPanel();
-    	setBackground(new Color(255, 239, 213));
+    	setBackground(new Color(0xB4B4DC));
+    	setPreferredSize(new Dimension(1000,1000));	//스크롤크기 결정하는 크기
     }
     
     // 각 노드의 위치 계산하기

@@ -11,11 +11,12 @@ class MenuBar extends JMenuBar {
 	private JMenu[] menuBtn = {new JMenu("New"), new JMenu("Open"), new JMenu("Save"), new JMenu("Save as.."), new JMenu("Close")};
 	
     public MenuBar() { 
-         setBackground(Color.LIGHT_GRAY);
+         setBackground(new Color(0x323C73));
          
          for(int i=0; i<5; i++) {
         	 add(menuBtn[i]);
-        	 menuBtn[i].setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 13));
+        	 menuBtn[i].setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 18));
+        	 menuBtn[i].setForeground(Color.WHITE);
         	 menuBtn[i].addMenuListener(new MyMenuListener());
          }
     }

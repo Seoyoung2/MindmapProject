@@ -20,9 +20,11 @@ public class RightPanel extends JPanel{
 		
 		for(int i = 0 ; i < attriLabel.length; i++) {
 			attriLabel[i].setHorizontalAlignment(SwingConstants.CENTER);
+			attriLabel[i].setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 18));
 			textPanel.add(attriLabel[i]);
 			
 			attriTField[i] = new JTextField("");
+			attriTField[i].setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 18));
 			attriTField[i].setHorizontalAlignment(SwingConstants.CENTER);
 			textPanel.add(attriTField[i]);
 		}
@@ -32,7 +34,9 @@ public class RightPanel extends JPanel{
 		
 		add(textPanel, BorderLayout.CENTER);
 		JButton rightBtn = new JButton("변경");
-		rightBtn.setBackground(new Color(0xFF6666));
+		rightBtn.setBackground(new Color(0xB93232));
+		rightBtn.setPreferredSize(new Dimension(30, 50));
+		rightBtn.setFont(new Font("돋움",  Font.BOLD, 18));
 		rightBtn.addActionListener(new RightButtonListener());
 		add(rightBtn, BorderLayout.SOUTH);
 	}
@@ -40,12 +44,13 @@ public class RightPanel extends JPanel{
 	class RightButtonListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JButton b = (JButton)e.getSource();
-			if(b.getText().equals("변경")) {
-				// 서로 선이 그려질 경우는 어떻게 해야하는가..ㅠ..
+			try {
 				node.setLocation(Integer.parseInt(attriTField[1].getText()),Integer.parseInt(attriTField[2].getText()));
 				node.setSize(Integer.parseInt(attriTField[3].getText()), Integer.parseInt(attriTField[4].getText()));
 				node.setBackground(new Color(Integer.parseInt(attriTField[5].getText(),16)));
+			}catch(NumberFormatException e1) {
+				JOptionPane.showMessageDialog(null, "잘못된 입력형식입니다!");		// 숫자칸에 문자입력하거나 16진수 색상형식이 잘못됬을때
+				return;
 			}
 		}
 	}

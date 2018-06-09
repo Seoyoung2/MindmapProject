@@ -1,5 +1,6 @@
 package MindmapProject;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -52,7 +53,6 @@ public class BarEvent {
 					Object obj = parser.parse(new FileReader(saveFile));
 					JSONObject jObject = (JSONObject)obj;
 					JSONArray jArray = (JSONArray)jObject.get("node");
-					//String jsonTotextArea = "";
 					
 					Window.getLeftPanel().datas = new Node[jArray.size()];
 					Node[] nodes = Window.getLeftPanel().datas;
@@ -60,13 +60,13 @@ public class BarEvent {
 					for(int i=0; i<jArray.size(); i++) {
 						JSONObject jNodeInfo = (JSONObject)jArray.get(i);
 						nodes[i] = new Node((String)jNodeInfo.get("text"));
-						//nodes[i].text = (String) jNodeInfo.get("text");
 						nodes[i].x = (int)(long)jNodeInfo.get("x");
 						nodes[i].y = (int)(long)jNodeInfo.get("y");
 						nodes[i].width = (int)(long)jNodeInfo.get("width");
 						nodes[i].height = (int)(long)jNodeInfo.get("height");
-						//nodes[i].color = (int)(long)jNodeInfo.get("color");
+						nodes[i].color = new Color(Integer.parseInt((String)jNodeInfo.get("color"),16));
 						nodes[i].setBounds(nodes[i].x,nodes[i].y,nodes[i].width,nodes[i].height);
+						nodes[i].setBackground(nodes[i].color);
 						
 						Window.getCenterPanel().add(nodes[i]);
 						Window.getCenterPanel().revalidate();
@@ -115,7 +115,7 @@ public class BarEvent {
 		    	jNodeInfo.put("y", Window.getLeftPanel().datas[i].getY());
 		    	jNodeInfo.put("width", Window.getLeftPanel().datas[i].getWidth());
 		    	jNodeInfo.put("height", Window.getLeftPanel().datas[i].getHeight());
-		    	//jNodeInfo.put("color", String.valueOf(nodes[i].color);
+		    	jNodeInfo.put("color", Integer.toHexString(Window.getLeftPanel().datas[i].getBackground().getRGB()).substring(2));
 		    	
 		    	jArray.add(jNodeInfo);
 		    }

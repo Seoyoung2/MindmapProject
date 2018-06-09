@@ -10,7 +10,7 @@ public class ToolBar extends JToolBar{
 	public ToolBar() {
 		JButton[] toolBtn = {new JButton("New"), new JButton("Open"), new JButton("Save"), new JButton("Save as.."), new JButton("Close")};
 		
-		setBackground(Color.GRAY);
+		setBackground(new Color(0xdcdcdc));
 		setFloatable(false);
 		
 		for(int i=0; i<5; i++) {
