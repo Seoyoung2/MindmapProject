@@ -81,8 +81,10 @@ public class LeftPanel extends JPanel{
     			}
 			
 			for(int i = 0; i < datas.length; i++) {
-				if(datas[i].parentNode != null)
+				if(datas[i].parentNode != null) {
 					datas[i].setMyLocation();
+					datas[i].setBackground(new Color(datas[i].level * 80 % 256, datas[i].level * 80 % 256, datas[i].level * 80 % 256));
+				}
 			}
 
 			Window.getCenterPanel().revalidate();

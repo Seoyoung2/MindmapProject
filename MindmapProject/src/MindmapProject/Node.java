@@ -27,7 +27,7 @@ public class Node extends JLabel{
 
 	Point up, down, left, right, center;
 
-	Color color;
+	Color color, color2;
 	
 	public Node(String naming){
 		super(naming); // 패널에서 보일 노드의 제목
@@ -39,7 +39,6 @@ public class Node extends JLabel{
 		addMouseMotionListener(listener);
 		addMouseListener(listener);
 		setBorder(new NodeDot());	//크기조절하는 점출력하는 보더클래스
-		
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setOpaque(true);
 	}
@@ -278,24 +277,27 @@ public class Node extends JLabel{
 
 		@Override
 		public void mouseEntered(MouseEvent e) { // 마우스가 컴포넌트 위에 올라옴
+			requestFocus();
+			node.color2 = node.getBackground();
+			node.setBackground(new Color((color2.getRed() + 128) % 255, (color2.getGreen() + 128) % 256, (color2.getBlue() + 128) % 256));
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) { // 마우스가 컴포넌트 밖으로 나감
 			setCursor(Cursor.getDefaultCursor());
+			setBackground(node.color2);
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) { // 마우스 버튼이 눌러짐
 			Window.getRightPanel().node = node;		//클릭한 노드의 속성을 rightPanel에서 바꿀수 있게
-            color = node.getBackground();
             
 			Window.getRightPanel().attriTField[0].setText(node.str);
 			Window.getRightPanel().attriTField[1].setText(String.valueOf(node.getX()));
 			Window.getRightPanel().attriTField[2].setText(String.valueOf(node.getY()));
 			Window.getRightPanel().attriTField[3].setText(String.valueOf(node.getWidth()));
 			Window.getRightPanel().attriTField[4].setText(String.valueOf(node.getHeight()));
-			Window.getRightPanel().attriTField[5].setText(Integer.toHexString(color.getRGB()).substring(2));
+			Window.getRightPanel().attriTField[5].setText(Integer.toHexString(node.color2.getRGB()).substring(2));
 
 			NodeDot dot = (NodeDot)getBorder();
             cursor = dot.getCursor(e);
@@ -308,7 +310,7 @@ public class Node extends JLabel{
 		public void mouseReleased(MouseEvent e) {
 			start = null;
 		} // 눌러진 마우스 버튼이 떼짐
-		
+
 		@Override
 		public void mouseMoved(MouseEvent e) { // 마우스가 컴포넌트 위에서 움직임
 			if (hasFocus()) {					// 커서모양 바꾸기
