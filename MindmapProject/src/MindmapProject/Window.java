@@ -8,12 +8,14 @@ public class Window extends JFrame{
 	static LeftPanel TextEditorPane; // 1
 	static CenterPanel MindMapPane; // 2a
 	static RightPanel AttributePane; // 2b
+	static JFrame frame;
 	
 	public Window(){
+		super("MindMap Project"); // 제목 설정
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 프레임 종료 시 프로그램 종료
 		setLayout(new BorderLayout()); // 배치 레이아웃 설정
-		setTitle("MindMap Project"); // 제목 설정
 		
+		frame = this;
 		TextEditorPane = new LeftPanel();
 		MindMapPane = new CenterPanel();
 		AttributePane = new RightPanel();
