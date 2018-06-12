@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import MindmapProject.LeftPanel.LeftButtonListener;
+import MindmapProject.RightPanel.RightButtonListener;
+
 public class ToolBar extends JToolBar{
 	public ToolBar() {
 		JButton[] toolBtn = {new JButton("New"), new JButton("Open"), new JButton("Save"), new JButton("Save as.."), new JButton("Close")};
@@ -18,6 +21,14 @@ public class ToolBar extends JToolBar{
 			toolBtn[i].setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 13));
 			toolBtn[i].addActionListener(new ToolBarButtonListener());
 		}
+		
+		JButton toolApplyBtn = new JButton("적용");
+		toolApplyBtn.addActionListener(Window.getLeftPanel().new LeftButtonListener());
+		add(toolApplyBtn);
+		
+		JButton toolChangeBtn = new JButton("변경");
+		toolChangeBtn.addActionListener(Window.getRightPanel().new RightButtonListener());
+		add(toolChangeBtn);
     }
 	
 	
@@ -58,4 +69,6 @@ public class ToolBar extends JToolBar{
     // 적용 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
     
     // 변경 이벤트 처리, 단 툴바에서 실행하건 메뉴바에서 실행하건 동일하게
+	
+	
 }
