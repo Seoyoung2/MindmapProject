@@ -18,7 +18,7 @@ import org.json.simple.parser.JSONParser;
 
 public class BarEvent {
 	
-	static boolean saveCnt = true;	//처음 저장하는 파일들은 다이얼로그 뜨게   (true면 뜨고 false면 안뜸)
+	static boolean saveCnt = true;	//泥섏쓬 ���옣�븯�뒗 �뙆�씪�뱾�� �떎�씠�뼹濡쒓렇 �쑉寃�   (true硫� �쑉怨� false硫� �븞�쑙)
 	static String saveFile = null;
 	
 	 static void selectNew() {
@@ -34,45 +34,73 @@ public class BarEvent {
 	
 	 static void selectOpen() {
 			JFileChooser chooser = new JFileChooser();
-	    	FileNameExtensionFilter filter = new FileNameExtensionFilter("json파일", "json");
+	    	FileNameExtensionFilter filter = new FileNameExtensionFilter("json�뙆�씪", "json");
 	    	chooser.setCurrentDirectory(new File("C:\\Users\\CEO\\Desktop\\MindmapProject\\src"));
-		 		//파일경로 바꿔서 실행해야됭ㅇㅇㅇㅇ
+		 		//�뙆�씪寃쎈줈 諛붽퓭�꽌 �떎�뻾�빐�빞�맠�뀋�뀋�뀋�뀋
 	    	chooser.setFileFilter(filter);
 	    	int ret = chooser.showOpenDialog(Window.getCenterPanel());
 	    	
 	    	if(ret == JFileChooser.APPROVE_OPTION) {
 	    		saveFile = chooser.getSelectedFile().toString();
-	    		//파일 확장자(.json)을 입력하지 않았을 경우 확장자 추가
+	    		//�뙆�씪 �솗�옣�옄(.json)�쓣 �엯�젰�븯吏� �븡�븯�쓣 寃쎌슦 �솗�옣�옄 異붽�
 	    		if(!saveFile.endsWith(".json")) {
 	    			saveFile += ".json";
 	    		}	
 	        	
-	        	//다이얼로그에서 열기버튼 눌렀을때 json파일 파싱
+	        	//�떎�씠�뼹濡쒓렇�뿉�꽌 �뿴湲곕쾭�듉 �닃���쓣�븣 json�뙆�씪 �뙆�떛
 	    		Window.getCenterPanel().removeAll();
 	        	JSONParser parser = new JSONParser();
+	        	
 	        	try {
 					Object obj = parser.parse(new FileReader(saveFile));
 					JSONObject jObject = (JSONObject)obj;
+					
 					JSONArray jArray = (JSONArray)jObject.get("node");
-					
 					Window.getLeftPanel().datas = new Node[jArray.size()];
-					Node[] nodes = Window.getLeftPanel().datas;
 					
-					for(int i=0; i<jArray.size(); i++) {
+					Node [] nodes = Window.getLeftPanel().datas;
+					
+					String [] values = ((String)jObject.get("textarea")).split("\n");
+					Stack stk = new Stack(values.length);
+					int tabcnt, sublen;
+					
+		   			for(int i = 0; i < values.length; i++) { // 스택을 이용한 트리 구조 형성
+						tabcnt = 0; // \t 개수, 레벨을 판정함
+						sublen = values[i].length(); // 문자열 길이
+						
+						for(int j = 0; j < sublen; j++) {
+							if(values[i].charAt(0)=='\t') { // 탭이면
+								++tabcnt; // 탭개수 올리고
+								values[i] = values[i].substring(1); // 현재 탭 문자 버리고 다음 문자 검사하러 넘어감
+							}
+						
+							else { // 탭이 아니면
+								nodes[i] = new Node(values[i]); // 그 문자열로 새 노드 생성
+								stk.push(nodes[i], tabcnt); // 스택에 넣고
+								break;
+							}
+						}
+					}
+		   			
+					
+					for(int i=0; i<nodes.length /*jArray.size()*/; i++) {
 						JSONObject jNodeInfo = (JSONObject)jArray.get(i);
-						nodes[i] = new Node((String)jNodeInfo.get("text"));
+						nodes[i].str = (String)jNodeInfo.get("text");
 						nodes[i].x = (int)(long)jNodeInfo.get("x");
 						nodes[i].y = (int)(long)jNodeInfo.get("y");
 						nodes[i].width = (int)(long)jNodeInfo.get("width");
 						nodes[i].height = (int)(long)jNodeInfo.get("height");
+						
 						nodes[i].color = new Color(Integer.parseInt((String)jNodeInfo.get("color"),16));
 						nodes[i].setBounds(nodes[i].x,nodes[i].y,nodes[i].width,nodes[i].height);
+						
+						nodes[i].initializeNode(nodes[i]);
+						
 						nodes[i].setBackground(nodes[i].color);
 						
 						Window.getCenterPanel().add(nodes[i]);
 						Window.getCenterPanel().revalidate();
 						Window.getCenterPanel().repaint();
-	    			
 					}
 					
 					Window.getLeftPanel().getTextArea().setText((String)jObject.get("textarea"));
@@ -87,17 +115,17 @@ public class BarEvent {
 	 
 	    static void selectSave() {
 	    	
-	    	if(saveCnt == true) {	//처음저장하는 거라면 무조건 다이얼로그 생성
+	    	if(saveCnt == true) {	//泥섏쓬���옣�븯�뒗 嫄곕씪硫� 臾댁“嫄� �떎�씠�뼹濡쒓렇 �깮�꽦
 		      	JFileChooser chooser = new JFileChooser();
-		    	FileNameExtensionFilter filter = new FileNameExtensionFilter("json파일", "json");
-		    	chooser.setCurrentDirectory(new File("C:\\Users\\CEO\\Desktop\\MindmapProject\\src"));	//다이얼로그 디폴트경로
+		    	FileNameExtensionFilter filter = new FileNameExtensionFilter("json�뙆�씪", "json");
+		    	chooser.setCurrentDirectory(new File("C:\\Users\\CEO\\Desktop\\MindmapProject\\src"));	//�떎�씠�뼹濡쒓렇 �뵒�뤃�듃寃쎈줈
 		    	chooser.setFileFilter(filter);
 		    	int ret = chooser.showSaveDialog(Window.getCenterPanel());
 		    	
 		    	if(ret == JFileChooser.APPROVE_OPTION) {
 		    		
 		    		saveFile = chooser.getSelectedFile().toString();
-		    		//파일 확장자(.json)을 입력하지 않았을 경우 확장자 추가
+		    		//�뙆�씪 �솗�옣�옄(.json)�쓣 �엯�젰�븯吏� �븡�븯�쓣 寃쎌슦 �솗�옣�옄 異붽�
 		    		if(!saveFile.endsWith(".json")) {
 		    			saveFile += ".json";
 		    		}	
@@ -121,23 +149,23 @@ public class BarEvent {
 		    	jArray.add(jNodeInfo);
 		    }
 	    	jObject.put("node", jArray);
-	    	jObject.put("textarea", Window.getLeftPanel().getTextArea().getText());	//textArea내용 문자열로 다 저장
+	    	jObject.put("textarea", Window.getLeftPanel().getTextArea().getText());	//textArea�궡�슜 臾몄옄�뿴濡� �떎 ���옣
 	    	
 	 	   try {
 	 		   saveCnt = false;
 	 		   FileWriter file = new FileWriter(saveFile);
 	 		   file.write(jObject.toJSONString());
-	 		   System.out.println(jObject.toJSONString()); 				// 어떻게 저장되나 테스트용
+	 		   System.out.println(jObject.toJSONString()); 				// �뼱�뼸寃� ���옣�릺�굹 �뀒�뒪�듃�슜
 	 		   file.flush();
 	 		   file.close();
-	 		   JOptionPane.showMessageDialog(Window.getCenterPanel(), "저장되었습니다^0^");
+	 		   JOptionPane.showMessageDialog(Window.getCenterPanel(), "���옣�릺�뿀�뒿�땲�떎^0^");
 	 		   
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	    }
 	    
-	    static void selectClose() {	//그냥 종료함
+	    static void selectClose() {	//洹몃깷 醫낅즺�븿
 	    	System.exit(0);
 	    }
 }

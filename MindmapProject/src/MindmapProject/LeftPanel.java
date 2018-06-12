@@ -50,7 +50,6 @@ public class LeftPanel extends JPanel{
 			Window.getCenterPanel().removeAll(); // centerpanel 초기화
 			String[] values = textArea.getText().split("\n"); // 행별로 잘라서
     			stk = new Stack(values.length);
-    			
     			datas = new Node[values.length];
    
     			for(int i = 0; i < values.length; i++) { // 스택을 이용한 트리 구조 형성

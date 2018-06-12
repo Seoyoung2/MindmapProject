@@ -8,21 +8,12 @@ public class Stack {
 		cnt = -1;
 		arr = new Node[len];
 	}
-/*	
-	void destruction() {
-		while(cnt != -1) {
-			arr[cnt].parentNode = null;
-			--cnt;
-		}
-	}
-*/
+
 	Node top() {
-//		System.out.println("top func");
 		return arr[cnt];
 	}
 	
-	void push(Node data, int tabcnt) {
-	//	System.out.println("push func");	
+	void push(Node data, int tabcnt) {	
 		data.level = tabcnt;
 		
 		while(isEmpty() == false) {
