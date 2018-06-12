@@ -13,7 +13,7 @@ import MindmapProject.LeftPanel.LeftButtonListener;
 import MindmapProject.RightPanel.RightButtonListener;
 
 class MenuBar extends JMenuBar {
-	private JMenu[] menuBtn = {new JMenu("New"), new JMenu("Open"), new JMenu("Save"), new JMenu("Save as.."), new JMenu("Close"), new JMenu("적용"), new JMenu("변경")};
+	private JMenu[] menuBtn = {new JMenu("New"), new JMenu("Open"), new JMenu("Save"), new JMenu("Save as.."), new JMenu("Close")};
 	
     public MenuBar() { 
          setBackground(new Color(0x323C73));
@@ -24,15 +24,14 @@ class MenuBar extends JMenuBar {
         	 menuBtn[i].setForeground(Color.WHITE);
         	 menuBtn[i].addMenuListener(new MyMenuListener());
          }
-         menuBtn[5].addActionListener(Window.getLeftPanel().new LeftButtonListener());
          
-         JButton toolApplyBtn = new JButton("적용");
-         toolApplyBtn.addActionListener(Window.getLeftPanel().new LeftButtonListener());
-         add(toolApplyBtn);
+         JButton menuApplyBtn = new JButton("적용");
+         menuApplyBtn.addActionListener(Window.getLeftPanel().new LeftButtonListener());
+         add(menuApplyBtn);
 		
-         JButton toolChangeBtn = new JButton("변경");
-         toolChangeBtn.addActionListener(Window.getRightPanel().new RightButtonListener());
-         add(toolChangeBtn);
+         JButton menuChangeBtn = new JButton("변경");
+         menuChangeBtn.addActionListener(Window.getRightPanel().new RightButtonListener());
+         add(menuChangeBtn);
     }
     
     //메뉴리스너랑 툴바에 있는 버튼리스너랑 달라서 따로 작성
