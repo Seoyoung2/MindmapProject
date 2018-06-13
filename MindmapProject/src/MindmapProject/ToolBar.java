@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import MindmapProject.LeftPanel.LeftButtonListener;
 import MindmapProject.RightPanel.RightButtonListener;
 
 public class ToolBar extends JToolBar{

@@ -29,14 +29,14 @@ public class RightPanel extends JPanel{
 			textPanel.add(attriTField[i]);
 		}
 		
-		attriTField[0].setEditable(false); // TEXT ¿µ¿ªÀº attribute¿¡¼­ ¼öÁ¤ ºÒ°¡´ÉÇÏ°Ô.
+		attriTField[0].setEditable(false); // TEXT ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ attributeï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ï¿½Ï°ï¿½.
 		// 0 = TEXT, 1 = X, 2 = Y, 3 = WIDTH, 4 = HEIGHT, 5 = COLOR
 		
 		add(textPanel, BorderLayout.CENTER);
-		JButton rightBtn = new JButton("º¯°æ");
+		JButton rightBtn = new JButton("ë³€ê²½");
 		rightBtn.setBackground(new Color(0xB93232));
 		rightBtn.setPreferredSize(new Dimension(30, 50));
-		rightBtn.setFont(new Font("µ¸¿ò",  Font.BOLD, 18));
+		rightBtn.setFont(new Font("ï¿½ï¿½ï¿½ï¿½",  Font.BOLD, 18));
 		rightBtn.addActionListener(new RightButtonListener());
 		add(rightBtn, BorderLayout.SOUTH);
 	}
@@ -55,7 +55,7 @@ public class RightPanel extends JPanel{
 				node.initializeNode(node);
 				
 			}catch(NumberFormatException e1) {
-				JOptionPane.showMessageDialog(null, "Àß¸øµÈ ÀÔ·ÂÇü½ÄÀÔ´Ï´Ù!");		// ¼ıÀÚÄ­¿¡ ¹®ÀÚÀÔ·ÂÇÏ°Å³ª 16Áø¼ö »ö»óÇü½ÄÀÌ Àß¸ø‰çÀ»¶§
+				JOptionPane.showMessageDialog(null, "ì˜ëª»ëœ ì…ë ¥í˜•ì‹ì…ë‹ˆë‹¤!");		// ï¿½ï¿½ï¿½ï¿½Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½Ï°Å³ï¿½ 16ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 				return;
 			}
 		}

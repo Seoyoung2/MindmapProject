@@ -72,7 +72,7 @@ public class LeftPanel extends JPanel{
 								datas[i].initializeNode(datas[i]);
 							
 							else { // root면 센터에 배치.
-								datas[i].setBounds(Window.getCenterPanel().getWidth() / 2, Window.getCenterPanel().getHeight() / 2, 72, 30);
+								datas[i].setBounds(Window.getCenterPanel().getWidth() / 2-100, Window.getCenterPanel().getHeight() / 2-100, 72, 30);
 								datas[i].initializeNode(datas[i]);
 							}
 							break;
